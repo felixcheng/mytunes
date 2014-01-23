@@ -13,7 +13,7 @@ var LibraryEntryView = Backbone.View.extend({
     this.model.play();
   },
   enqueue: function() {
-    this.model.queue();
+    this.model.enqueue();
   },
   render: function(){
     return this.$el.html(this.template(this.model.attributes));
