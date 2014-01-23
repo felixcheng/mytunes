@@ -19,7 +19,8 @@ var SongQueueView = Backbone.View.extend({
     this.$el.append(entryView.render());
   },
   makeActive: function() {
-    
+    this.collection.at(0).active();
+    this.collection.playFirst();
   }
 
 });

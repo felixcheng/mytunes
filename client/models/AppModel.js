@@ -20,6 +20,9 @@ var AppModel = Backbone.Model.extend({
     params.library.on('dequeue', function(song, playlist) {
       this.get('songQueue')[playlist].remove(song);
     }, this);
+    params.library.on('active', function(song, playlist) {
+      this.get('songQueue')[playlist].active = true;
+    }, this);
 
   }
 
