@@ -1,8 +1,9 @@
 // SongQueueView.js - Defines a backbone view class for the song queue.
 var SongQueueView = Backbone.View.extend({
-  initialize: function() {
+  initialize: function(attrs) {
     this.listenTo(this.collection, "add", this.render, this);
     this.listenTo(this.collection, "remove", this.render, this);
+    this.options = attrs;
   },
   events: {
     'click .active': 'makeActive'
@@ -10,7 +11,8 @@ var SongQueueView = Backbone.View.extend({
   tagName: 'table',
   className: 'songQueue',
   render: function() {
-    this.$el.html("<th>Song Queue</th><th><a href='#'class='active'>Active</a></th>");
+    this.collection.playlistNo = this.options.playlistNo;
+    this.$el.html("<th>Playlist " + this.collection.playlistNo + "</th><th><a href='#'class='active'>Active</a></th>");
     this.collection.forEach(this.addEntry, this);
     return this.$el;
   },
@@ -19,8 +21,6 @@ var SongQueueView = Backbone.View.extend({
     this.$el.append(entryView.render());
   },
   makeActive: function() {
-    this.collection.at(0).active();
-    this.collection.playFirst();
+    this.collection.makeActive();
   }
-
 });

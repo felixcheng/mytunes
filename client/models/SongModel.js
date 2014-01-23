@@ -10,17 +10,13 @@ var SongModel = Backbone.Model.extend({
     this.playCount++;
   },
   enqueue: function() {
-    this.playlist = prompt("which?");
+    this.playlist = prompt("To which playlist would you like to add the song?");
     this.trigger('enqueue', this, this.playlist);
   },
   dequeue: function(){
     this.trigger('dequeue', this, this.playlist);
   },
   ended: function(){
-    this.trigger('ended', this);
-  },
-  active: function() {
-    this.trigger('active', this, this.playlist)
+    this.trigger('ended', this, this.playlist);
   }
-
 });

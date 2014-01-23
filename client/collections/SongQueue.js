@@ -3,8 +3,8 @@ var SongQueue = Songs.extend({
 
   initialize: function(){
     this.listenTo(this, "add", this.analyze, this);
-    // this.listenTo(this, "ended", this.ended, this);
     this.active = false;
+    this.playlistNo = 0;
   },
   analyze: function(model) {
     if (this.length === 1 && this.active) {
@@ -14,13 +14,19 @@ var SongQueue = Songs.extend({
   playFirst: function(){
     this.at(0).play();
   },
-  // ended: function() {
-  //   if (this.active) {
-  //     this.dequeue(this.at(0));
-  //     if (this.length ) {
-  //         this.playFirst();
-  //     }
-  //   }
-  // }
-
+  dequeue: function(song) {
+    this.remove(song);
+  },
+  ended: function() {
+    this.dequeue(this.at(0));
+    if (this.length ) {
+      this.playFirst();
+    }
+  },
+  makeActive: function() {
+    this.active = true;
+    if (this.length) {
+      this.playFirst();
+    }
+  }
 });

@@ -24,7 +24,8 @@ var AppView = Backbone.View.extend({
     var temp = this.model.get('songQueue');
     temp.push(songQueue);
     this.model.set('songQueue', temp);
-    var songQueueView = new SongQueueView({collection: songQueue});
+    var playlistNo = this.model.get('songQueue').length-1;
+    var songQueueView = new SongQueueView({collection: songQueue, playlistNo: playlistNo});
     this.$el.append($("<br />"), songQueueView.render());
   }
 
