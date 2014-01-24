@@ -7,24 +7,32 @@ var AppView = Backbone.View.extend({
     this.playerView = new PlayerView({model: this.model.get('currentSong')});
     this.libraryView = new LibraryView({collection: this.model.get('library')});
     $('.container').append(this.render());
-    var songQueue = new SongQueue();
-    songQueue.fetch();
+
+    //fetches from local storage
     var results = {};
-    songQueue.forEach(function(model) {
+    var lib = this.model.get('library');
+
+    //builds an array of models from local storage
+    this.model.get('storageQueue').forEach(function(model) {
+      var thisMod;
+      //matching target title with existing songs (not to pass the whole model, just a song)
+      lib.forEach(function(mod) {
+        if (mod.get('title') === model.get('title')) {
+          thisMod = mod;
+        }
+      });
       var currPlaylist = model.get('playlist');
-      if (results[currPlaylist]) {
-        results[currPlaylist].push(model);
-      } else {
-        results[currPlaylist] = [];
-        results[currPlaylist].push(model);
-      }
+      results[currPlaylist] = results[currPlaylist] || [];
+      results[currPlaylist].push(thisMod);
     });
-    // debugger;
+
     for (var key in results){
       var newPlaylist = new SongQueue();
-      for (var i = 0; i < results[key].length; i++) {
-        newPlaylist.add(results[key][i]);
-      };
+      _.each(results[key], function(mod) {
+        mod.set('playlist', key);
+        newPlaylist.add(mod);
+      });
+
       var temp = this.model.get('songQueue');
       temp.push(newPlaylist);
       this.model.set('songQueue', temp);
@@ -53,6 +61,6 @@ var AppView = Backbone.View.extend({
     this.model.set('songQueue', temp);
     var playlistNo = this.model.get('songQueue').length-1;
     var songQueueView = new SongQueueView({collection: songQueue, playlistNo: playlistNo});
-    this.$el.append($("<br />"), songQueueView.render());
+    $('.container').append($("<br />"), songQueueView.render());
   }
 });
