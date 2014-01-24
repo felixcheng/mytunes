@@ -15,8 +15,12 @@ var AppModel = Backbone.Model.extend({
       this.set('currentSong', song);
     }, this);
     params.library.on('enqueue', function(song, playlist) {
-      this.get('songQueue')[playlist].add(song);
-      this.get('songQueue')[playlist].playlistNo = playlist;
+      if (playlist > this.get('songQueue').length) {
+        alert("That number doesn't match a playlist! Please enter a valid number.");
+      } else {
+        this.get('songQueue')[playlist].add(song);
+        this.get('songQueue')[playlist].playlistNo = playlist;
+      }
     }, this);
     params.library.on('dequeue', function(song, playlist) {
       this.get('songQueue')[playlist].dequeue(song);

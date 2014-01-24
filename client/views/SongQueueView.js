@@ -12,7 +12,7 @@ var SongQueueView = Backbone.View.extend({
   className: 'songQueue',
   render: function() {
     this.collection.playlistNo = this.options.playlistNo;
-    this.$el.html("<th>Playlist " + this.collection.playlistNo + "</th><th><a href='#'class='active'>Active</a></th>");
+    this.$el.html("<th>Playlist " + this.collection.playlistNo + "</th><th><a href='#'class='active'>Play</a></th>");
     this.collection.forEach(this.addEntry, this);
     return this.$el;
   },
@@ -21,6 +21,9 @@ var SongQueueView = Backbone.View.extend({
     this.$el.append(entryView.render());
   },
   makeActive: function() {
+    $('.selected').css({"background-color": "white"});
     this.collection.makeActive();
+    this.$el.css({"background-color": "#F99FDE"});
+    this.$el.addClass('selected');
   }
 });
