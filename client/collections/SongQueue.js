@@ -16,10 +16,9 @@ var SongQueue = Songs.extend({
   },
   dequeue: function(song) {
     this.remove(song);
-    song.destroy();
   },
-  ended: function() {
-    this.dequeue(this.at(0));
+  ended: function(song) {
+    song.trigger('dequeue', song, song.get('playlist'));
     if (this.length ) {
       this.playFirst();
     }
